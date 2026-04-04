@@ -2,46 +2,42 @@
 
 module tb_odd_up_down_counter;
 
-    reg clk;
-    reg reset;
-    reg Y;
-    wire [3:0] count;
+    reg t_clk;
+    reg t_rst; 
+    reg t_Y;
+    wire [3:0] t_count;
 
-    odd_up_down_counter uut (
-        .clk(clk),
-        .reset(reset),
-        .Y(Y),
-        .count(count)
-    );
+    odd_up_down_counter dut(.clk(t_clk), .reset(t_rst), .Y(t_Y), .count(t_count));
 
-    always #5 clk = ~clk;
+    initial begin 
+        t_clk = 1'b0;
+        forever #5 t_clk = ~t_clk;
+    end
+
+    initial begin 
+        t_rst = 1'b1;
+        #2 t_rst = 1'b0;
+        #8 t_rst = 1'b1;
+
+        #120 t_rst = 1'b0;
+        #10 t_rst = 1'b1;
+    end 
 
     initial begin
-        clk = 0;
-        reset = 1;
-        Y = 1;
+         t_Y = 1'b1;
 
-        $display("Applying Reset...");
-        reset = 0;
-        #10;
-        reset = 1; 
-        
-        $display("Testing Upstream (Y = 1)...");
-        #80; 
-
-        $display("Testing Downstream (Y = 0)...");
-        Y = 0;
-        #80; 
-
-        $display("Testing Reset interruption...");
-        #12 reset = 0; 
-        #10 reset = 1;
-
-        #30 $finish;
+         #80 t_Y = 1'b0;
     end
 
     initial begin
-        $monitor("Time=%0t | clk=%b | reset=%b | Y=%b | count=%b", $time, clk, reset, Y, count);
+        $display("Program by Max Benedict Chavez, Odd Up-Down Counter test");
+        $monitor("time=%0d, clk=%b, reset=%b, Y=%b, count=%b", 
+                 $time, t_clk, t_rst, t_Y, t_count);
+        $dumpfile("odd_counter.vcd");
+        $dumpvars();
     end
+
+    initial #180 $finish;
+
 
 endmodule
