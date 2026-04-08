@@ -1,3 +1,4 @@
+// Name: Max Benedict Chavez, Section: S03
 `timescale 1ns / 1ps
 
 module odd_up_down_counter (

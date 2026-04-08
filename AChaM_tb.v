@@ -1,3 +1,4 @@
+// Name: Max Benedict Chavez, Section: S03
 `timescale 1ns / 1ps
 
 module tb_odd_up_down_counter;
@@ -15,29 +16,30 @@ module tb_odd_up_down_counter;
     end
 
     initial begin 
-        t_rst = 1'b1;
-        #2 t_rst = 1'b0;
-        #8 t_rst = 1'b1;
+        t_rst = 1'b0;
 
-        #120 t_rst = 1'b0;
+        t_Y = 1'b0;
+
         #10 t_rst = 1'b1;
+
+        #90;
+
+        t_Y = 1'b1;
+        #90;
+
+        $finish;
+
     end 
 
     initial begin
-         t_Y = 1'b1;
+        $display("Name: Max Benedict Chavez");
+        $display("Specification: Behavioral odd up-down Binary counter");
 
-         #80 t_Y = 1'b0;
-    end
-
-    initial begin
-        $display("Program by Max Benedict Chavez, Odd Up-Down Counter test");
         $monitor("time=%0d, clk=%b, reset=%b, Y=%b, count=%b", 
                  $time, t_clk, t_rst, t_Y, t_count);
+        
         $dumpfile("odd_counter.vcd");
         $dumpvars();
     end
-
-    initial #180 $finish;
-
 
 endmodule
